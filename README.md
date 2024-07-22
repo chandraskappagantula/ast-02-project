@@ -12,5 +12,5 @@ dataset. The ID is also located on the title of the graph and they both match.
 
 This file is formatted as such, and contains 107 rows. 
 
-*reference_id*-*period in days*
+*reference_id* - *period in days*
 
