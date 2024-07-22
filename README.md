@@ -1,6 +1,8 @@
 This program organizes the HSC data from VC19. This dataset has 107 common reference stars that appear in all 11 files, along with their corresponding source stars. We graph both and make the reference star
 constant such that the variability of the source can be analyzed. 
 
+It is worth noting that this is all HSC-g data, meaning it is in the green band. 
+
 # Files and their formatting
 -----------------
 ## light_curves folder
