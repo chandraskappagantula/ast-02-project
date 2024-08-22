@@ -120,8 +120,6 @@ for i in range(len(combined_list_total)):
     flux_err_list.append(combined_list_total[i][list_of_indices[i]][2])
 
 
-# from here starts data analysis - this part of the code is what applies to everyone 
-
 mag_list = []
 mag_err = []
 for i in range(len(flux_list)):
@@ -134,14 +132,23 @@ for i in range(len(flux_list)):
     mag_err.append(flux_err_list[i]/flux_list[i])
 
 
-model = periodic.LombScargleFast(fit_period = True)
+model = periodic.LombScargle(fit_period = True)
 model.optimizer.period_range = (0.2, 1.2) # edit this range for different types of variable stars (units are days)
 model.fit(time, mag_list, mag_err)
 
-phase = (time / model.best_period) % 1 # calculate phase for phase-folded light curve
+phase = (time / numpy.float64(model.best_period)) % 1 # calculate phase for phase-folded light curve
+
+modeler = periodic.RRLyraeTemplateModeler()
+modeler.fit(phase, mag_list)
+
+phasefit = numpy.linspace(0, 1, 1000)
+
+magfit = modeler.predict(model.best_period * phasefit, period = model.best_period)
 
 fig, ax = plt.subplots()
 ax.errorbar(phase, mag_list, mag_err, fmt = ".k", ecolor = "grey", alpha = 1)
+ax.plot(phasefit, magfit)
+ax.set_xlim(0, 1)
 
 ax.set(xlabel = "Phase", ylabel = "Magnitude", title = "Magnitude vs Phase")
 ax.invert_yaxis() # larger magnitude means dimmer
